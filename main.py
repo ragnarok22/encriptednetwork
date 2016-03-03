@@ -18,8 +18,8 @@ class MainWindow(QMainWindow):
         self.icon = QIcon("sources/images/logo.png")
         self.setWindowIcon(self.icon)
         self.setWindowTitle("Encoding Algorithms Network")
-        self.setMinimumSize(300, 400)
-        self.setMaximumSize(200, 400)
+        self.setMinimumSize(450, 400)
+        self.setMaximumSize(450, 400)
 
         self.max_messages = 20
 
@@ -104,8 +104,12 @@ class MainWindow(QMainWindow):
         add_column_btn = QPushButton("Add Probabilities")
         add_column_btn.clicked.connect(self.add_column_function)
 
+        remove_column_btn = QPushButton("Remove Probabilities")
+        remove_column_btn.clicked.connect(self.delete_column_function)
+
         button_layout.addWidget(calculate_btn)
         button_layout.addWidget(add_column_btn)
+        button_layout.addWidget(remove_column_btn)
         button_layout.addWidget(exit_btn)
 
         self.central_layout.addWidget(self.table, 0, 0)
@@ -116,6 +120,9 @@ class MainWindow(QMainWindow):
 
     def add_column_function(self):
         self.table.insertRow(self.table.rowCount())
+
+    def delete_column_function(self):
+        pass
 
     def calculate_probabilities_function(self):
         if self.table.itemAt(0, 0) is None:
