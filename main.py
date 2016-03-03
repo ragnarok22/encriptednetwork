@@ -122,7 +122,17 @@ class MainWindow(QMainWindow):
         self.table.insertRow(self.table.rowCount())
 
     def delete_column_function(self):
-        pass
+        if self.table.rowCount() == 1:
+            print("hay solo uno")
+            return
+
+        if len(self.table.selectedIndexes()) == 0:
+            self.table.removeRow(self.table.rowCount()-1)
+            return
+
+        # self.table.clearContents()  # resetea todo el contenido de la tabla
+        for i in self.table.selectedIndexes():
+            self.table.removeRow(i.row())
 
     def calculate_probabilities_function(self):
         if self.table.itemAt(0, 0) is None:
