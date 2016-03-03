@@ -1,13 +1,14 @@
-from PyQt5.QtCore import Qt
-
-__version__ = "1.0"
+__version__ = "1.2"
 __author__ = "Ragnarok"
 
-from PyQt5.QtWidgets import QMainWindow, QWidget, QMenuBar, QStatusBar, QMenu, QAction, qApp, QGridLayout, QLabel, \
-    QHBoxLayout, QPushButton, QMessageBox, QApplication, QTableWidget
-from PyQt5.QtGui import QIcon
 import sys
+
 import platform
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QMainWindow, QWidget, QMenuBar, QStatusBar, QMenu, QAction, qApp, QGridLayout, QLabel, \
+    QHBoxLayout, QPushButton, QMessageBox, QApplication, QTableWidget, QTableWidgetItem
+from PyQt5.QtGui import QIcon
+
 from algorithm.codification import ShannonFano as shannon
 
 
@@ -58,7 +59,7 @@ class MainWindow(QMainWindow):
 
         self.about_shannon_action = QAction("About Shannon-Fano Algorithm", self)
         self.about_shannon_action.setStatusTip("Show information about Shannon-Fano algorithms")
-        self.about_shannon_action.triggered.connect(self.about_shannonfano_function)
+        self.about_shannon_action.triggered.connect(self.about_shannon_fano_function)
         self.menuHelp.addAction(self.about_shannon_action)
 
         self.about_action = QAction("&About Encoding Network", self)
@@ -116,13 +117,21 @@ class MainWindow(QMainWindow):
             QMessageBox.warning(None, "Error in data", "you must give unless one number")
             return
 
-        # self.table.sortByColumn(0, Qt.AscendingOrder)
+        probabilities = []
+        self.table.sortByColumn(0, Qt.DescendingOrder)
 
         for i in range(self.table.rowCount()):
             if self.table.item(i, 0) is None:
                 QMessageBox.warning(None, "Error in data", "you must complete de information")
                 return
-            print(self.table.item(i, 0).text())
+            probabilities.append(float(self.table.item(i, 0).text()))
+
+
+        encoding = shannon(probabilities).get_message_encoded()
+        print(encoding)
+
+        for i in range(self.table.rowCount()):
+            self.table.setItem(i, 1, QTableWidgetItem(encoding[i]))
 
     def about_application_function(self):
         about = QMessageBox()
@@ -141,7 +150,7 @@ class MainWindow(QMainWindow):
                           '''.format(__version__, __author__, platform.system())
                           )
 
-    def about_shannonfano_function(self):
+    def about_shannon_fano_function(self):
         about = "In the field of data compression, <b>Shannon–Fano coding</b> is a technique for constructing a prefix code" \
                 " based on a set of symbols and their probabilities (estimated or measured). It is suboptimal in the " \
                 "sense that it does not achieve the lowest possible expected code word length like Huffman coding;" \
