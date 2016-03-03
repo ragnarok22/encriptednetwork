@@ -1,8 +1,10 @@
+from PyQt5.QtCore import Qt
+
 __version__ = "1.0"
 __author__ = "Ragnarok"
 
 from PyQt5.QtWidgets import QMainWindow, QWidget, QMenuBar, QStatusBar, QMenu, QAction, qApp, QGridLayout, QLabel, \
-    QLineEdit, QHBoxLayout, QPushButton, QMessageBox, QApplication
+    QHBoxLayout, QPushButton, QMessageBox, QApplication, QTableWidget
 from PyQt5.QtGui import QIcon
 import sys
 import platform
@@ -78,22 +80,10 @@ class MainWindow(QMainWindow):
         self.central_layout = QGridLayout()
         self.central_layout.setSpacing(10)
 
-        # self.table = QTableWidget()
-        # self.table.setRowCount(1)
-        # self.table.setColumnCount(2)
-        # self.table.setHorizontalHeaderLabels(["probablilidad", "encriptacion"])
-        # self.table.resizeColumnsToContents()
+        self.table = QTableWidget(1, 2)
+        self.table.setHorizontalHeaderLabels(["Probabilities", "Encoding message"])
+        self.table.resizeColumnsToContents()
         # self.table.verticalHeader().hide()
-        # self.central_layout.addWidget(self.table)
-
-        self.central_layout.addWidget(QLabel("Probabilities"), 1, 0)
-        self.central_layout.addWidget(QLabel("Encoding Text"), 1, 1)
-
-        self.probablities_array = []
-
-        for i in range(self.max_messages):
-            self.probablities_array.append(QLineEdit())
-            self.central_layout.addWidget(self.probablities_array[i], i + 2, 0)
 
         # button layout
         button_layout = QHBoxLayout()
@@ -111,45 +101,34 @@ class MainWindow(QMainWindow):
         button_layout.addWidget(add_column_btn)
         button_layout.addWidget(exit_btn)
 
+        self.central_layout.addWidget(self.table)
         self.central_layout.addLayout(button_layout, 30, 30)
         self.mainWidget.setLayout(self.central_layout)
 
         self.set_styles()
 
     def add_column_function(self):
-        QMessageBox.warning(QWidget(), "Not Implemented",
-                            '''
-                            <p><b>Not Implemented Yet</b></p>
-                            <p>You have a beta version, this function is not implemented yet. Please
-                            visit <a href="http://www.encryptednetwork.com">our page</a> to download the latest version</p>
-                            '''
-                            )
+        self.table.insertRow(self.table.rowCount())
 
     def calculate_probabilities_function(self):
         print("calculando shannon fano")
-        if self.probablities_array[0].text() == "":
-            QMessageBox.information(QWidget(), "Error in Data", "you must to give unless one number")
+        if self.table.itemAt(0, 0) is None:
+            QMessageBox.warning(None, "Error in data", "you must give unless one number")
             return
-        probabilities = []
-        self.encoding_array = []
-        for i in self.probablities_array:
-            try:
-                probabilities.append(float(i.text()))
-            except ValueError:
-                break
 
-        sh = shannon(probabilities).get_message_encoded()
+        # self.table.sortByColumn(0, Qt.AscendingOrder)
 
-        for i in range(len(probabilities)):
-            self.encoding_array.append(QLabel(sh[i]))
-            self.central_layout.addWidget(self.encoding_array[i], i + 2, 1)
+        for i in range(self.table.rowCount()):
+            if self.table.item(i, 0) is None:
+                QMessageBox.warning(None, "Error in data", "you must complete de information")
+                return
+            print(self.table.item(i, 0).text())
 
     def about_application_function(self):
         about = QMessageBox()
         about.setWindowIcon(self.icon)
         QMessageBox.about(about, "About Encripted Network",
                           '''
-                          <body >
                           <p><b>Encrypted Network</b></p>
                           <p><b>Version:</b> {0}</p>
                           <p><b>Author:</b> {1}</p>
@@ -159,7 +138,6 @@ class MainWindow(QMainWindow):
                           </p>
                           <p>This version run on {2}</p>
                           <p><footer>&copy; 2015 - 2016 Encrypted Network. All rights reserved.</footer></p>
-                          </body>
                           '''.format(__version__, __author__, platform.system())
                           )
 
