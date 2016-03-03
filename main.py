@@ -5,8 +5,7 @@ import sys
 
 import platform
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QMainWindow, QWidget, QMenuBar, QStatusBar, QMenu, QAction, qApp, QGridLayout, QLabel, \
-    QHBoxLayout, QPushButton, QMessageBox, QApplication, QTableWidget, QTableWidgetItem
+from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon
 
 from algorithm.codification import ShannonFano as shannon
@@ -19,7 +18,8 @@ class MainWindow(QMainWindow):
         self.icon = QIcon("sources/images/logo.png")
         self.setWindowIcon(self.icon)
         self.setWindowTitle("Encoding Algorithms Network")
-        self.setMinimumSize(640, 480)
+        self.setMinimumSize(300, 400)
+        self.setMaximumSize(200, 400)
 
         self.max_messages = 20
 
@@ -83,11 +83,13 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.mainWidget)
 
         self.central_layout = QGridLayout()
-        self.central_layout.setSpacing(10)
+        self.central_layout.setSpacing(2)
 
         self.table = QTableWidget(1, 2)
         self.table.setHorizontalHeaderLabels(["Probabilities", "Encoding message"])
         self.table.resizeColumnsToContents()
+        self.table.horizontalHeader().setStretchLastSection(True)
+        self.table.horizontalHeader().resizeSection(0, self.width()/2-15)
         # self.table.verticalHeader().hide()
 
         # button layout
@@ -106,8 +108,8 @@ class MainWindow(QMainWindow):
         button_layout.addWidget(add_column_btn)
         button_layout.addWidget(exit_btn)
 
-        self.central_layout.addWidget(self.table)
-        self.central_layout.addLayout(button_layout, 30, 30)
+        self.central_layout.addWidget(self.table, 0, 0)
+        self.central_layout.addLayout(button_layout, 1, 0)
         self.mainWidget.setLayout(self.central_layout)
 
         self.set_styles()
@@ -116,7 +118,6 @@ class MainWindow(QMainWindow):
         self.table.insertRow(self.table.rowCount())
 
     def calculate_probabilities_function(self):
-        print("calculando shannon fano")
         if self.table.itemAt(0, 0) is None:
             QMessageBox.warning(None, "Error in data", "you must give unless one number")
             return
@@ -130,9 +131,7 @@ class MainWindow(QMainWindow):
                 return
             probabilities.append(float(self.table.item(i, 0).text()))
 
-
         encoding = shannon(probabilities).get_message_encoded()
-        print(encoding)
 
         for i in range(self.table.rowCount()):
             self.table.setItem(i, 1, QTableWidgetItem(encoding[i]))
