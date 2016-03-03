@@ -34,18 +34,22 @@ class MainWindow(QMainWindow):
         self.new_file_action = QAction("&New File", self)
         self.new_file_action.setStatusTip("Create a new encoding project")
         self.new_file_action.setShortcut("Ctrl+N")
+        self.new_file_action.triggered.connect(self.new_file_function)
         self.menuFile.addAction(self.new_file_action)
 
         self.open_file_action = QAction("&Open File", self)
         self.open_file_action.setStatusTip("Open a encoding network file")
         self.open_file_action.setShortcut("Ctrl+O")
+        self.open_file_action.triggered.connect(self.open_file_function)
         self.menuFile.addAction(self.open_file_action)
 
         self.save_action = QAction("&Save", self)
         self.save_action.setShortcut("Ctrl+S")
+        self.save_action.triggered.connect(self.save_function)
         self.menuFile.addAction(self.save_action)
 
         self.save_as_action = QAction("Save As", self)
+        self.save_as_action.triggered.connect(self.save_as_function)
         self.menuFile.addAction(self.save_as_action)
 
         self.quit_action = QAction("&Quit", self)
@@ -172,11 +176,14 @@ class MainWindow(QMainWindow):
     def save_function(self):
         print("save file")
 
-    def save_as_file(self):
+    def save_as_function(self):
         print("save as a file")
 
     def new_file_function(self):
         print("create new file")
+
+    def open_file_function(self):
+        print("open a file")
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
