@@ -169,6 +169,14 @@ class MainWindow(QMainWindow):
         style = open("sources/styles.css", "r")
         self.setStyleSheet(style.read())
 
+    def save_function(self):
+        print("save file")
+
+    def save_as_file(self):
+        print("save as a file")
+
+    def new_file_function(self):
+        print("create new file")
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
