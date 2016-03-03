@@ -88,5 +88,8 @@ class ShannonFano:
         self.shannon(self, separator, der)
 
     def get_message_encoded(self):
-        self.shannon(self, 0, der=self.cant_messages)
+        if self.cant_messages == 1:
+            self.shannon_fano[0] = "1"
+        else:
+            self.shannon(self, 0, der=self.cant_messages)
         return self.shannon_fano
