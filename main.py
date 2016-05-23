@@ -206,24 +206,45 @@ class MainWindow(QMainWindow):
             array[1].append(self.table.item(i, 1).text())
 
         objFile = QFileDialog.getSaveFileName(self, "Save File", "/home/ceramica",
-                                              'Encripted File (*.enf);; All files (*.*)')
+                                                'Encripted File (*.enf);; All files (*.*)'
+                                              )
         if objFile[0] == '':
             return
-        print(objFile[0])
         filename = objFile[0]
         if not filename.endswith('.enf'):
             filename += '.enf'
         file = open(filename, 'w')
+        iterator = 0
         for row in array:
+            iterator += 1
             for item in row:
                 file.write('{} '.format(item))
-            file.write('\n')
+            if iterator != 2:
+                file.write('\n')
 
     def new_file_function(self):
         print("create new file")
 
     def open_file_function(self):
         print("open a file")
+        objFile = QFileDialog.getOpenFileName(self, 'Open File', '/home/ceramica',
+                                                'Encripted File (*.enf)'
+                                              )
+        if objFile[0] == '':
+            return
+        print(objFile[0])
+        file = open(objFile[0], 'r')
+        file_content = file.read()
+        file_content = file_content.split('\n')
+        print(file_content)
+        file_probabilities = file_content[0].split()
+        file_encoding = file_content[1].split()
+
+        for i in range(len(file_probabilities)):
+            self.table.insertRow(self.table.rowCount())
+            self.table.setItem(i, 0, QTableWidgetItem(file_probabilities[i]))
+            self.table.setItem(i, 1, QTableWidgetItem(file_encoding[i]))
+        self.delete_column_function()
 
 
 if __name__ == "__main__":
