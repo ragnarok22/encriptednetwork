@@ -30,12 +30,31 @@ class MainWindow(QMainWindow):
         self.statusbar = QStatusBar()
 
         self.menuFile = QMenu("&File")
+        self.menuAction = QMenu("&Action")
 
         self.new_file_action = QAction("&New File", self)
         self.new_file_action.setStatusTip("Create a new encoding project")
         self.new_file_action.setShortcut("Ctrl+N")
         self.new_file_action.triggered.connect(self.new_file_function)
         self.menuFile.addAction(self.new_file_action)
+
+        self.calculate_action = QAction("&Calculate", self)
+        self.calculate_action.setStatusTip("Calculate encoding messages")
+        self.calculate_action.setShortcut('Ctrl+Shift+C')
+        self.calculate_action.triggered.connect(self.calculate_probabilities_function)
+        self.menuAction.addAction(self.calculate_action)
+
+        self.add_probabilities_action = QAction("&Add Probabilities", self)
+        self.add_probabilities_action.setStatusTip("Add Probabilities")
+        self.add_probabilities_action.setShortcut('Ctrl+Shift+A')
+        self.add_probabilities_action.triggered.connect(self.add_column_function)
+        self.menuAction.addAction(self.add_probabilities_action)
+
+        self.remove_probabilities_action = QAction("&Remove Probabilities", self)
+        self.remove_probabilities_action.setStatusTip("Remove Probabilities")
+        self.remove_probabilities_action.setShortcut('Ctrl+Shift+R')
+        self.remove_probabilities_action.triggered.connect(self.delete_column_function)
+        self.menuAction.addAction(self.remove_probabilities_action)
 
         self.open_file_action = QAction("&Open File", self)
         self.open_file_action.setStatusTip("Open a encoding network file")
@@ -74,6 +93,7 @@ class MainWindow(QMainWindow):
         self.menuHelp.addAction(self.about_action)
 
         self.menubar.addMenu(self.menuFile)
+        self.menubar.addMenu(self.menuAction)
         self.menubar.addMenu(self.menuHelp)
 
         self.setMenuBar(self.menubar)
