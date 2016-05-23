@@ -195,14 +195,29 @@ class MainWindow(QMainWindow):
 
     def save_as_function(self):
         print("save as a file")
+        array = []
+        array.append([])
+        array.append([])
+        for i in range(self.table.rowCount()):
+            if self.table.item(i, 0) is None:
+                QMessageBox.warning(None, "Error in data", "you must complete de information")
+                return
+            array[0].append(self.table.item(i, 0).text())
+            array[1].append(self.table.item(i, 1).text())
+
         objFile = QFileDialog.getSaveFileName(self, "Save File", "/home/ceramica",
                                               'Encripted File (*.enf);; All files (*.*)')
         if objFile[0] == '':
             return
         print(objFile[0])
-        # file = open(objFile[0] + '.enf', 'w')
-        # file.write('0.22:11\n')
-        # file.write('0.20:01\n')
+        filename = objFile[0]
+        if not filename.endswith('.enf'):
+            filename += '.enf'
+        file = open(filename, 'w')
+        for row in array:
+            for item in row:
+                file.write('{} '.format(item))
+            file.write('\n')
 
     def new_file_function(self):
         print("create new file")
