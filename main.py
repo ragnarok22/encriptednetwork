@@ -49,6 +49,7 @@ class MainWindow(QMainWindow):
         self.menuFile.addAction(self.save_action)
 
         self.save_as_action = QAction("Save As", self)
+        self.save_as_action.setShortcut("Ctrl+Shift+S")
         self.save_as_action.triggered.connect(self.save_as_function)
         self.menuFile.addAction(self.save_as_action)
 
@@ -89,7 +90,7 @@ class MainWindow(QMainWindow):
         self.table.setHorizontalHeaderLabels(["Probabilities", "Encoding message"])
         self.table.resizeColumnsToContents()
         self.table.horizontalHeader().setStretchLastSection(True)
-        self.table.horizontalHeader().resizeSection(0, self.width()/2-15)
+        self.table.horizontalHeader().resizeSection(0, self.width() / 2 - 15)
         # self.table.verticalHeader().hide()
 
         # button layout
@@ -127,7 +128,7 @@ class MainWindow(QMainWindow):
             return
 
         if len(self.table.selectedIndexes()) == 0:
-            self.table.removeRow(self.table.rowCount()-1)
+            self.table.removeRow(self.table.rowCount() - 1)
             return
 
         # self.table.clearContents()  # resetea todo el contenido de la tabla
@@ -163,7 +164,7 @@ class MainWindow(QMainWindow):
                           <p><b>Author:</b> {1}</p>
                           <p>University Informatics student.</p>
                           <p>This application using Shannon-Fano algorithm to encoding messages given the
-                          probabilities for each text
+                          probabilities for each text.
                           </p>
                           <p>This version run on {2}</p>
                           <p><footer>&copy; 2015 - 2016 Encrypted Network. All rights reserved.</footer></p>
@@ -194,12 +195,21 @@ class MainWindow(QMainWindow):
 
     def save_as_function(self):
         print("save as a file")
+        objFile = QFileDialog.getSaveFileName(self, "Save File", "/home/ceramica",
+                                              'Encripted File (*.enf);; All files (*.*)')
+        if objFile[0] == '':
+            return
+        print(objFile[0])
+        # file = open(objFile[0] + '.enf', 'w')
+        # file.write('0.22:11\n')
+        # file.write('0.20:01\n')
 
     def new_file_function(self):
         print("create new file")
 
     def open_file_function(self):
         print("open a file")
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
