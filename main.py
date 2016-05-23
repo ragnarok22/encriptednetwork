@@ -1,4 +1,4 @@
-__version__ = "1.3"
+__version__ = "1.4"
 __author__ = "Ragnarok"
 
 import sys
@@ -24,6 +24,8 @@ class MainWindow(QMainWindow):
         self.max_messages = 20
 
         self.create_menu_components()
+
+        self.url_save = ''
 
     def create_menu_components(self):
         self.menubar = QMenuBar()
@@ -144,7 +146,6 @@ class MainWindow(QMainWindow):
 
     def delete_column_function(self):
         if self.table.rowCount() == 1:
-            print("hay solo uno")
             return
 
         if len(self.table.selectedIndexes()) == 0:
@@ -211,7 +212,26 @@ class MainWindow(QMainWindow):
         self.setStyleSheet(style.read())
 
     def save_function(self):
-        print("save file")
+        if not self.url_save == '':
+            array = []
+            array.append([])
+            array.append([])
+            for i in range(self.table.rowCount()):
+                if self.table.item(i, 0) is None:
+                    QMessageBox.warning(None, "Error in data", "you must complete de information")
+                    return
+                array[0].append(self.table.item(i, 0).text())
+                array[1].append(self.table.item(i, 1).text())
+            file = open(self.url_save, 'w')
+            iterator = 0
+            for row in array:
+                iterator += 1
+                for item in row:
+                    file.write('{} '.format(item))
+                if iterator != 2:
+                    file.write('\n')
+        else:
+            self.save_as_function()
 
     def save_as_function(self):
         print("save as a file")
@@ -225,7 +245,7 @@ class MainWindow(QMainWindow):
             array[0].append(self.table.item(i, 0).text())
             array[1].append(self.table.item(i, 1).text())
 
-        objFile = QFileDialog.getSaveFileName(self, "Save File", "/home/ceramica",
+        objFile = QFileDialog.getSaveFileName(self, "Save File", self.url_save,
                                                 'Encripted File (*.enf);; All files (*.*)'
                                               )
         if objFile[0] == '':
@@ -233,6 +253,7 @@ class MainWindow(QMainWindow):
         filename = objFile[0]
         if not filename.endswith('.enf'):
             filename += '.enf'
+        self.url_save = filename
         file = open(filename, 'w')
         iterator = 0
         for row in array:
