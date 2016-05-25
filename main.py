@@ -2,12 +2,10 @@ __version__ = "1.4"
 __author__ = "Ragnarok"
 
 import sys
-
 import platform
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon
-
 from algorithm.codification import ShannonFano as shannon
 
 
@@ -247,7 +245,7 @@ class MainWindow(QMainWindow):
             array[1].append(self.table.item(i, 1).text())
 
         objFile = QFileDialog.getSaveFileName(self, "Save File", self.url_save,
-                                                'Encripted File (*.enf);; All files (*.*)'
+                                              'Encripted File (*.enf);; All files (*.*)'
                                               )
         if objFile[0] == '':
             return
@@ -266,10 +264,12 @@ class MainWindow(QMainWindow):
 
     def new_file_function(self):
         if self.url_save == '':
-            reply = QMessageBox.question(self, 'Estas seguro?', '¿Desea guardar los datos?', QMessageBox.Yes, QMessageBox.No)
+            reply = QMessageBox.question(self, 'Save Project?', '<b>Save changes in the project before closing?</b><br>'
+                                                                'Your changes will be lost if don\'t save them.',
+                                         QMessageBox.Yes, QMessageBox.No)
             if reply == QMessageBox.Yes:
-                # comprobar si esta bien la informacion de la tabla
-                self.save_function()
+                if self.is_correct_table():
+                    self.save_function()
         for i in range(self.table.rowCount()):
             self.table.removeRow(0)
         self.table.insertRow(0)
@@ -277,7 +277,7 @@ class MainWindow(QMainWindow):
     def open_file_function(self):
         self.new_file_function()
         objFile = QFileDialog.getOpenFileName(self, 'Open File', '/home/ceramica',
-                                                'Encripted File (*.enf)'
+                                              'Encripted File (*.enf)'
                                               )
         if objFile[0] == '':
             return
