@@ -139,6 +139,8 @@ class MainWindow(QMainWindow):
         self.central_layout.addLayout(button_layout, 1, 0)
         self.mainWidget.setLayout(self.central_layout)
 
+        self.statusBar().showMessage('Ready')
+
         self.set_styles()
 
     def add_column_function(self):
@@ -263,13 +265,18 @@ class MainWindow(QMainWindow):
                 file.write('\n')
 
     def new_file_function(self):
-        print('new file function')
+        # comprobar si se ha guardado el fichero
+        if self.url_save == '':
+            # mostrar un mensaje diciendo que si desea guardar los cambios
+            reply = QMessageBox.question(self, 'Estas seguro?', '¿Desea guardar los datos?', QMessageBox.Yes, QMessageBox.No)
+            if reply == QMessageBox.Yes:
+                # comprobar si esta bien la informacion de la tabla
+                self.save_function()
         for i in range(self.table.rowCount()):
             self.table.removeRow(0)
         self.table.insertRow(0)
 
     def open_file_function(self):
-        print("open a file")
         self.new_file_function()
         objFile = QFileDialog.getOpenFileName(self, 'Open File', '/home/ceramica',
                                                 'Encripted File (*.enf)'
