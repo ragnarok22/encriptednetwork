@@ -265,9 +265,7 @@ class MainWindow(QMainWindow):
                 file.write('\n')
 
     def new_file_function(self):
-        # comprobar si se ha guardado el fichero
         if self.url_save == '':
-            # mostrar un mensaje diciendo que si desea guardar los cambios
             reply = QMessageBox.question(self, 'Estas seguro?', '¿Desea guardar los datos?', QMessageBox.Yes, QMessageBox.No)
             if reply == QMessageBox.Yes:
                 # comprobar si esta bien la informacion de la tabla
@@ -294,6 +292,12 @@ class MainWindow(QMainWindow):
             self.table.setItem(i, 0, QTableWidgetItem(file_probabilities[i]))
             self.table.setItem(i, 1, QTableWidgetItem(file_encoding[i]))
         self.delete_column_function()
+
+    def is_correct_table(self):
+        for i in range(self.table.rowCount()):
+            if self.table.item(i, 0) is None:
+                return False
+        return True
 
 
 if __name__ == "__main__":
