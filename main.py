@@ -234,7 +234,6 @@ class MainWindow(QMainWindow):
             self.save_as_function()
 
     def save_as_function(self):
-        print("save as a file")
         array = []
         array.append([])
         array.append([])
@@ -264,20 +263,22 @@ class MainWindow(QMainWindow):
                 file.write('\n')
 
     def new_file_function(self):
-        print("create new file")
+        print('new file function')
+        for i in range(self.table.rowCount()):
+            self.table.removeRow(0)
+        self.table.insertRow(0)
 
     def open_file_function(self):
         print("open a file")
+        self.new_file_function()
         objFile = QFileDialog.getOpenFileName(self, 'Open File', '/home/ceramica',
                                                 'Encripted File (*.enf)'
                                               )
         if objFile[0] == '':
             return
-        print(objFile[0])
         file = open(objFile[0], 'r')
         file_content = file.read()
         file_content = file_content.split('\n')
-        print(file_content)
         file_probabilities = file_content[0].split()
         file_encoding = file_content[1].split()
 
