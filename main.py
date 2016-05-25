@@ -22,6 +22,7 @@ class MainWindow(QMainWindow):
         self.max_messages = 20
 
         self.create_menu_components()
+        self.center()
 
         self.url_save = ''
 
@@ -298,6 +299,11 @@ class MainWindow(QMainWindow):
             if self.table.item(i, 0) is None:
                 return False
         return True
+
+    def center(self):
+        screen = QDesktopWidget().screenGeometry()
+        size =  self.geometry()
+        self.move((screen.width()-size.width())/2, (screen.height()-size.height())/2)
 
 
 if __name__ == "__main__":
