@@ -219,7 +219,7 @@ class MainWindow(QMainWindow):
             array.append([])
             for i in range(self.table.rowCount()):
                 if self.table.item(i, 0) is None:
-                    QMessageBox.warning(None, "Error in data", "you must complete de information")
+                    QMessageBox.warning(None, "Error in data", "you must complete de information", QMessageBox.Ok)
                     return
                 array[0].append(self.table.item(i, 0).text())
                 array[1].append(self.table.item(i, 1).text())
@@ -276,7 +276,8 @@ class MainWindow(QMainWindow):
         self.table.insertRow(0)
 
     def open_file_function(self):
-        self.new_file_function()
+        if self.is_correct_table():
+            self.new_file_function()
         objFile = QFileDialog.getOpenFileName(self, 'Open File', '/home/ceramica',
                                               'Encripted File (*.enf)'
                                               )
