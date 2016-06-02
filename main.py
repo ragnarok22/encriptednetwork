@@ -1,19 +1,20 @@
-__version__ = "1.4"
-__author__ = "Ragnarok"
-
 import sys
 import platform
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QIcon
+from PyQt4.QtCore import Qt
+from PyQt4.QtGui import *
 from algorithm.codification import ShannonFano as shannon
+
+__version__ = "1.4"
+__author__ = "Ragnarok"
+__appname__ = "Encripted Network"
+__author_email__ = 'rhernandeza@facinf.uho.edu.cu'
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.icon = QIcon("sources/images/logo.png")
+        self.icon = QIcon("images/logo.png")
         self.setWindowIcon(self.icon)
         self.setWindowTitle("Encoding Algorithms Network")
         self.setMinimumSize(450, 400)
@@ -76,18 +77,18 @@ class MainWindow(QMainWindow):
         self.quit_action = QAction("&Quit", self)
         self.quit_action.setStatusTip("Quit the program")
         self.quit_action.setShortcut("Ctrl+Q")
-        self.quit_action.triggered.connect(qApp.exit)
+        self.quit_action.triggered.connect(self.close)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.quit_action)
 
         self.menuHelp = QMenu("&Help")
 
-        self.about_shannon_action = QAction("About Shannon-Fano Algorithm", self)
+        self.about_shannon_action = QAction("About &Shannon-Fano Algorithm", self)
         self.about_shannon_action.setStatusTip("Show information about Shannon-Fano algorithms")
         self.about_shannon_action.triggered.connect(self.about_shannon_fano_function)
         self.menuHelp.addAction(self.about_shannon_action)
 
-        self.about_action = QAction("&About Encoding Network", self)
+        self.about_action = QAction("About &Encoding Network", self)
         self.about_action.setStatusTip("Show information about Encoding Network")
         self.about_action.setShortcut("F1")
         self.about_action.triggered.connect(self.about_application_function)
@@ -112,7 +113,6 @@ class MainWindow(QMainWindow):
         self.table.resizeColumnsToContents()
         self.table.horizontalHeader().setStretchLastSection(True)
         self.table.horizontalHeader().resizeSection(0, self.width() / 2 - 15)
-        # self.table.verticalHeader().hide()
 
         # button layout
         button_layout = QHBoxLayout()
@@ -121,7 +121,7 @@ class MainWindow(QMainWindow):
         calculate_btn.clicked.connect(self.calculate_probabilities_function)
 
         exit_btn = QPushButton("Quit")
-        exit_btn.clicked.connect(qApp.exit)
+        exit_btn.clicked.connect(self.close)
 
         add_column_btn = QPushButton("Add Probabilities")
         add_column_btn.clicked.connect(self.add_column_function)
@@ -189,7 +189,7 @@ class MainWindow(QMainWindow):
                           probabilities for each text.
                           </p>
                           <p>This version run on {2}</p>
-                          <p><footer>&copy; 2015 - 2016 Encrypted Network. All rights reserved.</footer></p>
+                          <p><footer>&copy; 2015 - 2016 Encrypted Network {0}. All rights reserved.</footer></p>
                           '''.format(__version__, __author__, platform.system())
                           )
 
@@ -205,11 +205,11 @@ class MainWindow(QMainWindow):
                 " Shannon's noiseless coding theorem, or with Shannon-Fano-Elias coding (also known as Elias coding)," \
                 " the precursor to arithmetic coding."
         sh = QMessageBox()
-        sh.setWindowIcon(QIcon("sources/images/shannon.png"))
+        sh.setWindowIcon(QIcon("images/shannon.png"))
         QMessageBox.about(sh, "About Shannon-Fano algorithms", about)
 
     def set_styles(self):
-        style = open("sources/styles.css", "r")
+        style = open("styles.css", "r")
         self.setStyleSheet(style.read())
 
     def save_function(self):
@@ -235,9 +235,7 @@ class MainWindow(QMainWindow):
             self.save_as_function()
 
     def save_as_function(self):
-        array = []
-        array.append([])
-        array.append([])
+        array = [[], []]
         for i in range(self.table.rowCount()):
             if self.table.item(i, 0) is None:
                 QMessageBox.warning(None, "Error in data", "you must complete de information")
@@ -248,9 +246,9 @@ class MainWindow(QMainWindow):
         objFile = QFileDialog.getSaveFileName(self, "Save File", self.url_save,
                                               'Encripted File (*.enf);; All files (*.*)'
                                               )
-        if objFile[0] == '':
+        if objFile == '':
             return
-        filename = objFile[0]
+        filename = objFile
         if not filename.endswith('.enf'):
             filename += '.enf'
         self.url_save = filename
@@ -281,9 +279,9 @@ class MainWindow(QMainWindow):
         objFile = QFileDialog.getOpenFileName(self, 'Open File', '/home/ceramica',
                                               'Encripted File (*.enf)'
                                               )
-        if objFile[0] == '':
+        if objFile == '':
             return
-        file = open(objFile[0], 'r')
+        file = open(objFile, 'r')
         file_content = file.read()
         file_content = file_content.split('\n')
         file_probabilities = file_content[0].split()
@@ -303,8 +301,8 @@ class MainWindow(QMainWindow):
 
     def center(self):
         screen = QDesktopWidget().screenGeometry()
-        size =  self.geometry()
-        self.move((screen.width()-size.width())/2, (screen.height()-size.height())/2)
+        size = self.geometry()
+        self.move((screen.width() - size.width()) / 2, (screen.height() - size.height()) / 2)
 
 
 if __name__ == "__main__":
