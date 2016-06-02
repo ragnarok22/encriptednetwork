@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -60,3 +61,10 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+=======
+cache
+cache-downloads
+inspector
+api
+source/inspector.html
+>>>>>>> 4ddf6b845d9d6fb01fe3b3e81748da4cdf5239cc
