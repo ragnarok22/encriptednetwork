@@ -1,0 +1,10 @@
+before_script:
+	-apt-get update && install python3-pyqt4
+
+rspec:
+	script:
+		-bundle exec rspec
+
+rubocop:
+	script:
+		-bundle exec rubocop
