@@ -1,5 +1,5 @@
 before_script:
-    - apt-get install python-pyqt4
+    - apt-get update %% apt-get install python3 && apt-get install python-pyqt4
 
 rspec:
     script:
