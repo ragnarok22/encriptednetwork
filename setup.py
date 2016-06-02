@@ -3,14 +3,8 @@ import platform
 from glob import glob
 from main import __version__, __appname__, __author__, __author_email__
 
-if platform == 'win32':
-    import py2exe
 
 SETUP_DICT = {
-    'windows': [{
-        'script': 'main.py',
-        'icon_resources': [(0, r'images\\logo.ico')]
-    }],
 
     'name': __appname__,
     'version': __version__,
@@ -18,14 +12,13 @@ SETUP_DICT = {
     'author': __author__,
     'author_email': __author_email__,
 
-    'zipfile': None,
     # 'zipfile': 'lib/library.zip',
 
     'data_files': (
         ('', glob(r'C:\Windows\SYSTEM32\msvcp100.dll')),
         ('', glob(r'C:\Windows\SYSTEM32\msvcr100.dll')),
-        ('images', ['images\logo.png']),
-        ('images', ['images\shannon.png']),
+        ('images', ['images/logo.png']),
+        ('images', ['images/shannon.png']),
         ('', ['styles.css']),
     ),
 
@@ -36,5 +29,13 @@ SETUP_DICT = {
         },
     }
 }
+
+if platform == 'win32':
+    import py2exe
+    SETUP_DICT['windows'] = [{
+        'script': 'main.py',
+        'icon_resources': [(0, r'images\\logo.ico')]
+    }]
+    SETUP_DICT['zipfile'] = None
 
 setup(**SETUP_DICT)
