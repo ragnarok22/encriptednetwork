@@ -30,7 +30,7 @@ SETUP_DICT = {
     }
 }
 
-if platform == 'win32':
+if platform.system() == 'Windows':
     import py2exe
     SETUP_DICT['windows'] = [{
         'script': 'main.py',
