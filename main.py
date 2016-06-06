@@ -10,6 +10,12 @@ __appname__ = "Encripted Network"
 __author_email__ = 'rhernandeza@facinf.uho.edu.cu'
 
 
+class MyDelegate(QItemDelegate):
+
+    def createEditor(self, parent, option, index):
+        return QDoubleSpinBox(parent)
+
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -113,6 +119,7 @@ class MainWindow(QMainWindow):
         self.table.resizeColumnsToContents()
         self.table.horizontalHeader().setStretchLastSection(True)
         self.table.horizontalHeader().resizeSection(0, self.width() / 2 - 15)
+        self.table.setItemDelegate(MyDelegate())
 
         # button layout
         button_layout = QHBoxLayout()
