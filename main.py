@@ -4,7 +4,7 @@ from PyQt4.QtCore import Qt
 from PyQt4.QtGui import *
 from algorithm.codification import ShannonFano as shannon
 
-__version__ = "1.4"
+__version__ = "1.4.2"
 __author__ = "Ragnarok"
 __appname__ = "Encripted Network"
 __author_email__ = 'rhernandeza@facinf.uho.edu.cu'
@@ -191,13 +191,14 @@ class MainWindow(QMainWindow):
                           <p><b>Encrypted Network</b></p>
                           <p><b>Version:</b> {0}</p>
                           <p><b>Author:</b> {1}</p>
+                          <p><b>Email:</b> <a href='mailto:{2}'>{2}</a></p>
                           <p>University Informatics student.</p>
                           <p>This application using Shannon-Fano algorithm to encoding messages given the
                           probabilities for each text.
                           </p>
-                          <p>This version run on {2}</p>
+                          <p>This version run on {3}</p>
                           <p><footer>&copy; 2015 - 2016 Encrypted Network {0}. All rights reserved.</footer></p>
-                          '''.format(__version__, __author__, platform.system())
+                          '''.format(__version__, __author__, __author_email__, platform.system())
                           )
 
     def about_shannon_fano_function(self):
