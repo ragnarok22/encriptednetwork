@@ -15,8 +15,8 @@ SETUP_DICT = {
     # 'zipfile': 'lib/library.zip',
 
     'data_files': (
-        ('', glob(r'C:\Windows\SYSTEM32\msvcp100.dll')),
-        ('', glob(r'C:\Windows\SYSTEM32\msvcr100.dll')),
+        # ('', glob(r'C:\Windows\SYSTEM32\msvcp100.dll')),
+        # ('', glob(r'C:\Windows\SYSTEM32\msvcr100.dll')),
         ('images', ['images/logo.png']),
         ('images', ['images/shannon.png']),
         ('', ['styles.css']),
