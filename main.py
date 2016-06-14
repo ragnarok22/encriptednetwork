@@ -7,7 +7,7 @@ from PyQt4.QtGui import *
 
 from algorithm.codification import ShannonFano as shannon
 
-__version__ = "2.0.0"
+__version__ = "2.0.1"
 __author__ = "Ragnarok"
 __appname__ = "Encripted Network"
 __author_email__ = 'rhernandeza@facinf.uho.edu.cu'
@@ -31,12 +31,7 @@ class MainWindow(QMainWindow):
 
         self.max_messages = 20
 
-        self.create_menu_components()
-        self.center()
-
-        self.url_save = ''
-
-    def create_menu_components(self):
+        # create_menu_components
         self.menubar = QMenuBar()
         self.statusbar = QStatusBar()
 
@@ -151,6 +146,10 @@ class MainWindow(QMainWindow):
         self.statusBar().showMessage('Ready')
 
         self.set_styles()
+
+        self.center()
+
+        self.url_save = ''
 
     def add_column_function(self):
         self.table.insertRow(self.table.rowCount())
@@ -283,9 +282,7 @@ class MainWindow(QMainWindow):
         self.table.insertRow(0)
 
     def open_file_function(self):
-        objFile = QFileDialog.getOpenFileName(self, 'Open File', '/home/ceramica',
-                                              'Encripted File (*.enf)'
-                                              )
+        objFile = QFileDialog.getOpenFileName(self, 'Open File', '/home/ceramica', 'Encripted File (*.enf)')
         if objFile == '':
             return
         self.new_file_function()

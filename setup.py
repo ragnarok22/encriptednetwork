@@ -25,7 +25,8 @@ SETUP_DICT = {
             'bundle_files': 0,
             'includes': ['sip', 'PyQt4.QtCore'],
         },
-    }
+    },
+    'requires': ['PyQt4']
 }
 
 if platform.system() == 'Windows':
