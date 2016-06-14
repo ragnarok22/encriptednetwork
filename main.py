@@ -284,26 +284,24 @@ class MainWindow(QMainWindow):
 
     def open_file_function(self):
         if self.is_correct_table():
+            objFile = QFileDialog.getOpenFileName(self, 'Open File', '/home/ceramica',
+                                                  'Encripted File (*.enf)'
+                                                  )
+            if objFile == '':
+                return
             self.new_file_function()
-        objFile = QFileDialog.getOpenFileName(self, 'Open File', '/home/ceramica',
-                                              'Encripted File (*.enf)'
-                                              )
-        if objFile == '':
-            return
-        file = open(objFile, 'rb')
-        # file = open(objFile, 'r')
-        file_content = pickle.load(file)
-        # file_content = file.read()
-        file_content = file_content.split('\n')
-        file_probabilities = file_content[0].split()
-        file_encoding = file_content[1].split()
+            file = open(objFile, 'rb')
+            file_content = pickle.load(file)
+            file_content = file_content.split('\n')
+            file_probabilities = file_content[0].split()
+            file_encoding = file_content[1].split()
 
-        for i in range(len(file_probabilities)):
-            self.table.insertRow(self.table.rowCount())
-            self.table.setItem(i, 0, QTableWidgetItem(file_probabilities[i]))
-            self.table.setItem(i, 1, QTableWidgetItem(file_encoding[i]))
-        self.delete_column_function()
-        file.close()
+            for i in range(len(file_probabilities)):
+                self.table.insertRow(self.table.rowCount())
+                self.table.setItem(i, 0, QTableWidgetItem(file_probabilities[i]))
+                self.table.setItem(i, 1, QTableWidgetItem(file_encoding[i]))
+            self.delete_column_function()
+            file.close()
 
     def is_correct_table(self):
         for i in range(self.table.rowCount()):
