@@ -1,10 +1,13 @@
 import sys
+import pickle
+
 import platform
 from PyQt4.QtCore import Qt
 from PyQt4.QtGui import *
+
 from algorithm.codification import ShannonFano as shannon
 
-__version__ = "1.4.3"
+__version__ = "2.0.0"
 __author__ = "Ragnarok"
 __appname__ = "Encripted Network"
 __author_email__ = 'rhernandeza@facinf.uho.edu.cu'
@@ -222,23 +225,21 @@ class MainWindow(QMainWindow):
 
     def save_function(self):
         if not self.url_save == '':
-            array = []
-            array.append([])
-            array.append([])
+            array = [[], []]
             for i in range(self.table.rowCount()):
                 if self.table.item(i, 0) is None:
                     QMessageBox.warning(None, "Error in data", "you must complete de information", QMessageBox.Ok)
                     return
                 array[0].append(self.table.item(i, 0).text())
                 array[1].append(self.table.item(i, 1).text())
-            file = open(self.url_save, 'w')
-            iterator = 0
+            file = open(self.url_save, 'wb')
+            content = ""
             for row in array:
-                iterator += 1
                 for item in row:
-                    file.write('{} '.format(item))
-                if iterator != 2:
-                    file.write('\n')
+                    content += item + " "
+                content += "\n"
+            pickle.dump(content, file)
+            file.close()
         else:
             self.save_as_function()
 
@@ -260,14 +261,14 @@ class MainWindow(QMainWindow):
         if not filename.endswith('.enf'):
             filename += '.enf'
         self.url_save = filename
-        file = open(filename, 'w')
-        iterator = 0
+        file = open(filename, 'wb')
+        content = ""
         for row in array:
-            iterator += 1
             for item in row:
-                file.write('{} '.format(item))
-            if iterator != 2:
-                file.write('\n')
+                content += item + " "
+            content += "\n"
+        pickle.dump(content, file)
+        file.close()
 
     def new_file_function(self):
         if self.url_save == '':
@@ -289,8 +290,10 @@ class MainWindow(QMainWindow):
                                               )
         if objFile == '':
             return
-        file = open(objFile, 'r')
-        file_content = file.read()
+        file = open(objFile, 'rb')
+        # file = open(objFile, 'r')
+        file_content = pickle.load(file)
+        # file_content = file.read()
         file_content = file_content.split('\n')
         file_probabilities = file_content[0].split()
         file_encoding = file_content[1].split()
@@ -300,6 +303,7 @@ class MainWindow(QMainWindow):
             self.table.setItem(i, 0, QTableWidgetItem(file_probabilities[i]))
             self.table.setItem(i, 1, QTableWidgetItem(file_encoding[i]))
         self.delete_column_function()
+        file.close()
 
     def is_correct_table(self):
         for i in range(self.table.rowCount()):

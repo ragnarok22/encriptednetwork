@@ -12,8 +12,6 @@ SETUP_DICT = {
     'author': __author__,
     'author_email': __author_email__,
 
-    # 'zipfile': 'lib/library.zip',
-
     'data_files': (
         # ('', glob(r'C:\Windows\SYSTEM32\msvcp100.dll')),
         # ('', glob(r'C:\Windows\SYSTEM32\msvcr100.dll')),
