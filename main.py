@@ -1,8 +1,10 @@
 import sys
-import pickle
 import platform
+import pickle
+
 from PyQt4.QtCore import Qt
 from PyQt4.QtGui import *
+
 from algorithm.codification import ShannonFano as shannon
 
 __version__ = "2.1.0"
@@ -171,13 +173,14 @@ class MainWindow(QMainWindow):
             QMessageBox.warning(None, "Error in data", "you must give unless one number")
             return
 
+        if not self.is_correct_table():
+            QMessageBox.warning(None, "Error in data", "you must complete de information")
+            return
+
         probabilities = []
         self.table.sortByColumn(0, Qt.DescendingOrder)
 
         for i in range(self.table.rowCount()):
-            if self.table.item(i, 0) is None:
-                QMessageBox.warning(None, "Error in data", "you must complete de information")
-                return
             probabilities.append(float(self.table.item(i, 0).text()))
 
         encoding = shannon(probabilities).get_message_encoded()
@@ -224,53 +227,48 @@ class MainWindow(QMainWindow):
         self.setStyleSheet(style.read())
 
     def save_function(self):
+        if not self.is_correct_table():
+            QMessageBox.warning(None, "Error in data", "you must complete de information", QMessageBox.Ok)
+            return
+
         if not self.url_save == '':
-            array = [[], []]
-            for i in range(self.table.rowCount()):
-                if self.table.item(i, 0) is None:
-                    QMessageBox.warning(None, "Error in data", "you must complete de information", QMessageBox.Ok)
-                    return
-                array[0].append(self.table.item(i, 0).text())
-                array[1].append(self.table.item(i, 1).text())
-            file = open(self.url_save, 'wb')
-            content = ""
-            for row in array:
-                for item in row:
-                    content += item + " "
-                content += "\n"
-            pickle.dump(content, file)
-            file.close()
+            self.write_file(self.url_save)
         else:
             self.save_as_function()
         self.is_change = False
 
     def save_as_function(self):
+        if not self.is_correct_table():
+            QMessageBox.warning(None, "Error in data", "you must complete de information", QMessageBox.Ok)
+            return
+
+        filename = QFileDialog.getSaveFileName(self, "Save File", self.url_save,
+                                              'Encripted File (*.enf);; All files (*.*)'
+                                              )
+        if filename == '':
+            return
+        self.write_file(filename)
+        self.is_change = False
+
+    def write_file(self, filename):
         array = [[], []]
         for i in range(self.table.rowCount()):
-            if self.table.item(i, 0) is None:
-                QMessageBox.warning(None, "Error in data", "you must complete de information")
-                return
             array[0].append(self.table.item(i, 0).text())
             array[1].append(self.table.item(i, 1).text())
 
-        objFile = QFileDialog.getSaveFileName(self, "Save File", self.url_save,
-                                              'Encripted File (*.enf);; All files (*.*)'
-                                              )
-        if objFile == '':
-            return
-        filename = objFile
         if not filename.endswith('.enf'):
             filename += '.enf'
-        self.url_save = filename
+
         file = open(filename, 'wb')
         content = ""
+
         for row in array:
             for item in row:
                 content += item + " "
             content += "\n"
         pickle.dump(content, file)
         file.close()
-        self.is_change = False
+        self.url_save = filename
 
     def new_file_function(self):
         if self.url_save == '':
