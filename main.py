@@ -1,10 +1,8 @@
 import sys
 import pickle
-
 import platform
 from PyQt4.QtCore import Qt
 from PyQt4.QtGui import *
-
 from algorithm.codification import ShannonFano as shannon
 
 __version__ = "2.0.1"
@@ -14,7 +12,6 @@ __author_email__ = 'rhernandeza@facinf.uho.edu.cu'
 
 
 class MyDelegate(QItemDelegate):
-
     def createEditor(self, parent, option, index):
         return QDoubleSpinBox(parent)
 
@@ -210,7 +207,7 @@ class MainWindow(QMainWindow):
                 " however unlike Huffman coding, it does guarantee that all code word lengths are within one bit of " \
                 "their theoretical ideal − logP(x). The technique was proposed in Claude Elwood Shannon's A " \
                 "Mathematical Theory of Communication, his 1948 article introducing the field of information theory." \
-                " The method was attributed to Robert Fano, who later published it as a technical report.[1]" \
+                " The method was attributed to Robert Fano, who later published it as a technical report." \
                 " Shannon–Fano coding should not be confused with Shannon coding, the coding method used to prove" \
                 " Shannon's noiseless coding theorem, or with Shannon-Fano-Elias coding (also known as Elias coding)," \
                 " the precursor to arithmetic coding."
@@ -310,6 +307,12 @@ class MainWindow(QMainWindow):
         size = self.geometry()
         self.move((screen.width() - size.width()) / 2, (screen.height() - size.height()) / 2)
 
+    def closeEvent(self, QCloseEvent):
+        reply = QMessageBox.question(self, 'Save Project?', '<b>Save changes in the project before closing?</b><br>'
+                                                            'Your changes will be lost if don\'t save them.',
+                                     QMessageBox.Yes, QMessageBox.No)
+        if reply == QMessageBox.Yes:
+            self.save_function()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
