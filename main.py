@@ -174,7 +174,7 @@ class MainWindow(QMainWindow):
             return
 
         if not self.is_correct_table():
-            QMessageBox.warning(None, "Error in data", "you must complete de information")
+            QMessageBox.warning(None, "Error in data", "you must complete the information")
             return
 
         probabilities = []
@@ -228,7 +228,7 @@ class MainWindow(QMainWindow):
 
     def save_function(self):
         if not self.is_correct_table():
-            QMessageBox.warning(None, "Error in data", "you must complete de information", QMessageBox.Ok)
+            QMessageBox.warning(None, "Error in data", "you must complete the information", QMessageBox.Ok)
             return
 
         if not self.url_save == '':
@@ -239,7 +239,7 @@ class MainWindow(QMainWindow):
 
     def save_as_function(self):
         if not self.is_correct_table():
-            QMessageBox.warning(None, "Error in data", "you must complete de information", QMessageBox.Ok)
+            QMessageBox.warning(None, "Error in data", "you must complete the information", QMessageBox.Ok)
             return
 
         filename = QFileDialog.getSaveFileName(self, "Save File", self.url_save,
@@ -271,13 +271,15 @@ class MainWindow(QMainWindow):
         self.url_save = filename
 
     def new_file_function(self):
-        if self.url_save == '':
+        if self.is_change:
             reply = QMessageBox.question(self, 'Save Project?', '<b>Save changes in the project before closing?</b><br>'
                                                                 'Your changes will be lost if don\'t save them.',
                                          QMessageBox.Yes, QMessageBox.No)
             if reply == QMessageBox.Yes:
-                if self.is_correct_table():
-                    self.save_function()
+                self.save_function()
+                if not self.is_correct_table():
+                    return
+
         for i in range(self.table.rowCount()):
             self.table.removeRow(0)
         self.table.insertRow(0)
