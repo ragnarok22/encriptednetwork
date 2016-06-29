@@ -5,7 +5,7 @@ from PyQt4.QtCore import Qt
 from PyQt4.QtGui import *
 from algorithm.codification import ShannonFano as shannon
 
-__version__ = "2.0.1"
+__version__ = "2.1.0"
 __author__ = "Ragnarok"
 __appname__ = "Encripted Network"
 __author_email__ = 'rhernandeza@facinf.uho.edu.cu'
@@ -147,9 +147,11 @@ class MainWindow(QMainWindow):
         self.center()
 
         self.url_save = ''
+        self.is_change = False
 
     def add_column_function(self):
         self.table.insertRow(self.table.rowCount())
+        self.is_change = True
 
     def delete_column_function(self):
         if self.table.rowCount() == 1:
@@ -162,6 +164,7 @@ class MainWindow(QMainWindow):
         # self.table.clearContents()  # resetea todo el contenido de la tabla
         for i in self.table.selectedIndexes():
             self.table.removeRow(i.row())
+        self.is_change = True
 
     def calculate_probabilities_function(self):
         if self.table.itemAt(0, 0) is None:
@@ -181,6 +184,7 @@ class MainWindow(QMainWindow):
 
         for i in range(self.table.rowCount()):
             self.table.setItem(i, 1, QTableWidgetItem(encoding[i]))
+        self.is_change = True
 
     def about_application_function(self):
         about = QMessageBox()
@@ -238,6 +242,7 @@ class MainWindow(QMainWindow):
             file.close()
         else:
             self.save_as_function()
+        self.is_change = False
 
     def save_as_function(self):
         array = [[], []]
@@ -265,6 +270,7 @@ class MainWindow(QMainWindow):
             content += "\n"
         pickle.dump(content, file)
         file.close()
+        self.is_change = False
 
     def new_file_function(self):
         if self.url_save == '':
@@ -277,6 +283,7 @@ class MainWindow(QMainWindow):
         for i in range(self.table.rowCount()):
             self.table.removeRow(0)
         self.table.insertRow(0)
+        self.is_change = False
 
     def open_file_function(self):
         objFile = QFileDialog.getOpenFileName(self, 'Open File', '/home/ceramica', 'Encripted File (*.enf)')
@@ -295,6 +302,7 @@ class MainWindow(QMainWindow):
             self.table.setItem(i, 1, QTableWidgetItem(file_encoding[i]))
         self.delete_column_function()
         file.close()
+        self.is_change = False
 
     def is_correct_table(self):
         for i in range(self.table.rowCount()):
@@ -308,11 +316,12 @@ class MainWindow(QMainWindow):
         self.move((screen.width() - size.width()) / 2, (screen.height() - size.height()) / 2)
 
     def closeEvent(self, QCloseEvent):
-        reply = QMessageBox.question(self, 'Save Project?', '<b>Save changes in the project before closing?</b><br>'
-                                                            'Your changes will be lost if don\'t save them.',
-                                     QMessageBox.Yes, QMessageBox.No)
-        if reply == QMessageBox.Yes:
-            self.save_function()
+        if self.is_change:
+            reply = QMessageBox.question(self, 'Save Project?', '<b>Save changes in the project before closing?</b><br>'
+                                                                'Your changes will be lost if don\'t save them.',
+                                         QMessageBox.Yes, QMessageBox.No)
+            if reply == QMessageBox.Yes:
+                self.save_function()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
