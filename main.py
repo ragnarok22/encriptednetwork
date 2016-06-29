@@ -280,16 +280,25 @@ class MainWindow(QMainWindow):
                 if not self.is_correct_table():
                     return
 
-        for i in range(self.table.rowCount()):
-            self.table.removeRow(0)
-        self.table.insertRow(0)
+        self.reset_table()
         self.is_change = False
 
     def open_file_function(self):
+        if self.is_change:
+            reply = QMessageBox.question(self, 'Save Project?', '<b>Save changes in the project before closing?</b><br>'
+                                                                'Your changes will be lost if don\'t save them.',
+                                         QMessageBox.Yes, QMessageBox.No)
+            if reply == QMessageBox.Yes:
+                self.save_function()
+                if not self.is_correct_table():
+                    return
+
         objFile = QFileDialog.getOpenFileName(self, 'Open File', '/home/ceramica', 'Encripted File (*.enf)')
         if objFile == '':
             return
-        self.new_file_function()
+
+        self.reset_table()
+
         file = open(objFile, 'rb')
         file_content = pickle.load(file)
         file_content = file_content.split('\n')
@@ -303,6 +312,11 @@ class MainWindow(QMainWindow):
         self.delete_column_function()
         file.close()
         self.is_change = False
+
+    def reset_table(self):
+        for i in range(self.table.rowCount()):
+            self.table.removeRow(0)
+        self.table.insertRow(0)
 
     def is_correct_table(self):
         for i in range(self.table.rowCount()):
