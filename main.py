@@ -336,6 +336,8 @@ class MainWindow(QMainWindow):
                                          QMessageBox.Yes, QMessageBox.No)
             if reply == QMessageBox.Yes:
                 self.save_function()
+                if not self.is_correct_table():
+                    QCloseEvent.ignore()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
