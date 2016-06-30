@@ -7,7 +7,7 @@ from PyQt4.QtGui import *
 
 from algorithm.codification import ShannonFano as shannon
 
-__version__ = "2.2.0"
+__version__ = "2.2.1"
 __author__ = "Ragnarok"
 __appname__ = "Encrypted Network"
 __author_email__ = 'rhernandeza@facinf.uho.edu.cu'
