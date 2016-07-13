@@ -7,9 +7,9 @@ from PyQt4.QtGui import *
 
 from algorithm.codification import ShannonFano as shannon
 
-__version__ = "2.2.0"
+__version__ = "2.2.1"
 __author__ = "Ragnarok"
-__appname__ = "Encripted Network"
+__appname__ = "Encrypted Network"
 __author_email__ = 'rhernandeza@facinf.uho.edu.cu'
 
 
@@ -170,12 +170,17 @@ class MainWindow(QMainWindow):
 
     def calculate_probabilities_function(self):
         if self.table.itemAt(0, 0) is None:
-            QMessageBox.warning(None, "Error in data", "you must give unless one number")
+            QMessageBox.warning(None, "Error in data", "You must give unless one number")
             return
 
         if not self.is_correct_table():
-            QMessageBox.warning(None, "Error in data", "you must complete the information")
+            QMessageBox.warning(None, "Error in data", "You must complete the information")
             return
+
+        for i in range(self.table.rowCount()):
+            if self.table.item(i, 0) is None:
+                QMessageBox.warning(None, "Error in data", "You must complete the information")
+                return
 
         probabilities = []
         self.table.sortByColumn(0, Qt.DescendingOrder)
@@ -228,7 +233,7 @@ class MainWindow(QMainWindow):
 
     def save_function(self):
         if not self.is_correct_table():
-            QMessageBox.warning(None, "Error in data", "you must complete the information", QMessageBox.Ok)
+            QMessageBox.warning(None, "Error in data", "You must complete the information")
             return
 
         if not self.url_save == '':
@@ -239,7 +244,7 @@ class MainWindow(QMainWindow):
 
     def save_as_function(self):
         if not self.is_correct_table():
-            QMessageBox.warning(None, "Error in data", "you must complete the information", QMessageBox.Ok)
+            QMessageBox.warning(None, "Error in data", "You must complete the information", QMessageBox.Ok)
             return
 
         filename = QFileDialog.getSaveFileName(self, "Save File", self.url_save,
@@ -269,6 +274,7 @@ class MainWindow(QMainWindow):
         pickle.dump(content, file)
         file.close()
         self.url_save = filename
+        self.statusBar().showMessage("The file was saved")
 
     def new_file_function(self):
         if self.is_change:
