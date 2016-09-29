@@ -346,7 +346,7 @@ class MainWindow(QMainWindow):
                     QCloseEvent.ignore()
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
+    app = QApplication(['-platform', 'minimal'])
     window = MainWindow()
     window.show()
     app.exec_()
